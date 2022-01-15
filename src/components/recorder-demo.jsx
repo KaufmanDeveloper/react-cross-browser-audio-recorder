@@ -6,11 +6,11 @@ function RecorderDemo() {
 
   return (
     <div>
-      <button onClick={() => setup()} type="button">
+      <button onClick={setup} type="button">
         Setup Audio Recorder
       </button>
 
-      <button onClick={() => start()} type="button">
+      <button onClick={start} type="button">
         Start
       </button>
 

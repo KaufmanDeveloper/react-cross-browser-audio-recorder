@@ -17,21 +17,32 @@ const useRecorder = () => {
   const audioElementType = 'audio/wav';
   const audioElementID = 'audio-playback';
 
-  const createNewRecorder = async (stream) => {
-    if (audioContext) {
-      const input = audioContext.createMediaStreamSource(stream);
-      const newRecorder = new Recorder(input);
-      setRecorder(newRecorder);
+  console.log(recorder);
+
+  const getAudio = async () => {
+    if (!recorder) {
+      throw new Error('Recorder not initialized');
     }
+
+    return new Promise((resolve) => {
+      recorder.exportWAV((blob) => {
+        setAudioBlob(blob);
+        setAudioURL(URL.createObjectURL(blob));
+      });
+    });
+  };
+
+  const createNewRecorder = async (stream, newAudioContext) => {
+    const input = newAudioContext?.createMediaStreamSource(stream);
+    const newRecorder = new Recorder(input);
+    setRecorder(newRecorder);
   };
 
   const setup = async () => {
-    if (!audioContext) {
-      setAudioContext(new AudioContext());
-    }
+    const newAudioContext = new AudioContext();
 
     return navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-      createNewRecorder(stream);
+      createNewRecorder(stream, newAudioContext);
     });
   };
 
@@ -78,6 +89,12 @@ const useRecorder = () => {
       })
     );
   };
+
+  useEffect(() => {
+    if (recorder && !isRecording) {
+      getAudio();
+    }
+  }, ['recorder', 'isRecording']);
 
   return { audioBlob, audioURL, isRecording, setup, start, stop };
 };
