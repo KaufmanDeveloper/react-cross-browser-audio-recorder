@@ -7,6 +7,7 @@ const useRecorder = () => {
   const [recorder, setRecorder] = useState();
   const [audioContext, setAudioContext] = useState();
   const [audioTimeout, setAudioTimeout] = useState();
+  const [resolvePromise, setResolvePromise] = useState();
   const [rejectPromise, setRejectPromise] = useState();
   const [isRecording, setIsRecording] = useState();
   const [recordingTime, setRecordingTime] = useState();
@@ -18,7 +19,6 @@ const useRecorder = () => {
 
   const createNewRecorder = async (stream) => {
     if (audioContext) {
-      console.log(audioContext);
       const input = audioContext.createMediaStreamSource(stream);
       const newRecorder = new Recorder(input);
       setRecorder(newRecorder);
@@ -35,27 +35,51 @@ const useRecorder = () => {
     });
   };
 
+  const resetRecorder = () => {
+    setIsRecording(false);
+    setAudioTimeout(null);
+    setRejectPromise(null);
+    setResolvePromise(null);
+
+    recorder?.stop();
+  };
+
+  const stop = async () => {
+    if (!isRecording) {
+      return;
+    }
+
+    // eslint-disable-next-line no-unused-expressions
+    resolvePromise && resolvePromise();
+    // eslint-disable-next-line no-unused-expressions
+    audioTimeout && setAudioTimeout(null);
+
+    resetRecorder();
+  };
+
   const start = async () => {
     await setup();
 
-    // this.set('isRecording', true);
     setIsRecording(true);
     recorder.record();
 
     return (
       recordingTime &&
       new Promise((resolve, reject) => {
-        let finish = () => resolve(this.stop());
-        let audioTimeout = later(finish, recordingTime);
+        const finish = () => resolve(stop());
+        if (audioTimeout <= recordingTime) {
+          finish();
+          return;
+        }
 
-        this.set('audioTimeout', audioTimeout);
-        this.set('resolvePromise', resolve);
-        this.set('rejectPromise', reject);
+        setAudioTimeout(audioTimeout);
+        setResolvePromise(resolve);
+        setRejectPromise(reject);
       })
     );
   };
 
-  return { audioBlob, audioURL, isRecording, setup };
+  return { audioBlob, audioURL, isRecording, setup, start, stop };
 };
 
 export default useRecorder;
