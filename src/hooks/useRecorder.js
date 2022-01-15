@@ -5,6 +5,7 @@ const { URL, Blob, Promise, navigator, FileReader, AudioContext } = window;
 
 const useRecorder = () => {
   const [recorder, setRecorder] = useState();
+  const [finishedRecording, setFinishedRecording] = useState(false);
   const [audioContext, setAudioContext] = useState();
   const [audioTimeout, setAudioTimeout] = useState();
   const [resolvePromise, setResolvePromise] = useState();
@@ -17,8 +18,6 @@ const useRecorder = () => {
   const audioElementType = 'audio/wav';
   const audioElementID = 'audio-playback';
 
-  console.log(recorder);
-
   const getAudio = async () => {
     if (!recorder) {
       throw new Error('Recorder not initialized');
@@ -26,6 +25,7 @@ const useRecorder = () => {
 
     return new Promise((resolve) => {
       recorder.exportWAV((blob) => {
+        console.log(blob);
         setAudioBlob(blob);
         setAudioURL(URL.createObjectURL(blob));
       });
@@ -41,7 +41,7 @@ const useRecorder = () => {
   const setup = async () => {
     const newAudioContext = new AudioContext();
 
-    return navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    await navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       createNewRecorder(stream, newAudioContext);
     });
   };
@@ -66,10 +66,15 @@ const useRecorder = () => {
     audioTimeout && setAudioTimeout(null);
 
     resetRecorder();
+    // this.set('finishedRecording', true);
+    // this.set('finishedRecording', false);
+    setFinishedRecording(true);
+    setFinishedRecording(false);
   };
 
   const start = async () => {
     await setup();
+    console.log(recorder);
 
     setIsRecording(true);
     recorder.record();
@@ -91,10 +96,10 @@ const useRecorder = () => {
   };
 
   useEffect(() => {
-    if (recorder && !isRecording) {
+    if (finishedRecording) {
       getAudio();
     }
-  }, ['recorder', 'isRecording']);
+  }, ['finishedRecording']);
 
   return { audioBlob, audioURL, isRecording, setup, start, stop };
 };
