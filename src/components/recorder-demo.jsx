@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useRecorder from '../hooks/useRecorder';
 
 function RecorderDemo() {
-  const { audioURL } = useRecorder();
+  const { audioURL, setup, start } = useRecorder();
 
   return (
-    <audio src={audioURL} controls>
-      <track default kind="captions" srcLang="en" src={audioURL} />
-      Sorry, your browser does not support embedded audio.
-    </audio>
+    <div>
+      <button onClick={() => setup()} type="button">
+        Setup Audio Recorder
+      </button>
+
+      <button onClick={() => start()} type="button">
+        Start
+      </button>
+
+      <audio src={audioURL} controls>
+        <track default kind="captions" srcLang="en" src={audioURL} />
+        Sorry, your browser does not support embedded audio.
+      </audio>
+    </div>
   );
 }
 

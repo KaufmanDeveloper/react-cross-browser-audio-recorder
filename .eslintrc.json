@@ -15,6 +15,9 @@
   "ignorePatterns": ["**/utilities/recorder.js"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "prefer-const": "warn",
+    "no-shadow": "warn",
+    "no-undef": "warn"
   }
 }
