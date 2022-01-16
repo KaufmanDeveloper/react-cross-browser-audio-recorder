@@ -1,0 +1,27 @@
+.recorder-demo {
+  display: flex;
+  width: 31rem;
+  justify-content: space-between;
+  margin-top: 4rem;
+  margin-left: 4rem;
+}
+
+@media only screen and (max-width: 825px) {
+  .recorder-demo {
+    flex-direction: column;
+  }
+
+  .recorder-button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.recorder-audio {
+  width: 16rem;
+}
+
+.recorder-button {
+  height: 3rem;
+  width: 5rem;
+}
