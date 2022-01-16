@@ -1,8 +1,8 @@
 {
   "name": "react-cross-browser-audio-recorder",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://kaufmandeveloper.github.io/react-cross-browser-audio-recorder",
+  "private": false,
+  "homepage": "https://github.com/KaufmanDeveloper/react-cross-browser-audio-recorder#readme",
   "main": "src/index.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
