@@ -12,7 +12,7 @@ function RecorderDemo() {
         Start
       </button>
 
-      <audio src={audioURL} controls type="audio/wav">
+      <audio className="recorder-audio" src={audioURL} controls type="audio/wav">
         <track default kind="captions" srcLang="en" src={audioURL} />
         Sorry, your browser does not support embedded audio.
       </audio>
