@@ -11,7 +11,7 @@ const useRecorder = () => {
   const [resolvePromise, setResolvePromise] = useState();
   const [rejectPromise, setRejectPromise] = useState();
   const [isRecording, setIsRecording] = useState();
-  const [recordingTime, setRecordingTime] = useState();
+  const [recordingTime, setRecordingTime] = useState(5000);
   const [audioBlob, setAudioBlob] = useState();
   const [audioURL, setAudioURL] = useState();
 
@@ -52,7 +52,7 @@ const useRecorder = () => {
     setRejectPromise(null);
     setResolvePromise(null);
 
-    recorder?.stop();
+    recorder.stop();
   };
 
   const stop = async () => {
@@ -66,40 +66,42 @@ const useRecorder = () => {
     audioTimeout && setAudioTimeout(null);
 
     resetRecorder();
-    // this.set('finishedRecording', true);
-    // this.set('finishedRecording', false);
     setFinishedRecording(true);
-    setFinishedRecording(false);
   };
 
   const start = async () => {
-    await setup();
-    console.log(recorder);
+    if (!recorder) {
+      await setup();
+    }
 
     setIsRecording(true);
-    recorder.record();
-
-    return (
-      recordingTime &&
-      new Promise((resolve, reject) => {
-        const finish = () => resolve(stop());
-        if (audioTimeout <= recordingTime) {
-          finish();
-          return;
-        }
-
-        setAudioTimeout(audioTimeout);
-        setResolvePromise(resolve);
-        setRejectPromise(reject);
-      })
-    );
   };
+
+  useEffect(() => {
+    if (isRecording && recorder && recordingTime) {
+      recorder.record();
+
+      // eslint-disable-next-line no-unused-expressions
+      // Promise((resolve, reject) => {
+      //   const finish = () => resolve(stop());
+      //   if (audioTimeout <= recordingTime) {
+      //     finish();
+      //     return;
+      //   }
+
+      //   setAudioTimeout(audioTimeout);
+      //   setResolvePromise(resolve);
+      //   setRejectPromise(reject);
+      // });
+    }
+  }, [isRecording, recorder, recordingTime]);
 
   useEffect(() => {
     if (finishedRecording) {
       getAudio();
+      setFinishedRecording(false);
     }
-  }, ['finishedRecording']);
+  }, [finishedRecording]);
 
   return { audioBlob, audioURL, isRecording, setup, start, stop };
 };
