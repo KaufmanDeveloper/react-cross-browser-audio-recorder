@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/app.css';
 import useRecorder from '../hooks/useRecorder';
 
 function RecorderDemo() {
@@ -6,8 +7,8 @@ function RecorderDemo() {
   const { audioURL, isRecording, start, stop } = useRecorder(options);
 
   return (
-    <div>
-      <button onClick={start} disabled={isRecording} type="button">
+    <div className="recorder-demo">
+      <button className="recorder-button" onClick={start} disabled={isRecording} type="button">
         Start
       </button>
 
@@ -16,7 +17,7 @@ function RecorderDemo() {
         Sorry, your browser does not support embedded audio.
       </audio>
 
-      <button onClick={stop} disabled={!isRecording} type="button">
+      <button className="recorder-button" onClick={stop} disabled={!isRecording} type="button">
         Stop
       </button>
     </div>

@@ -1,0 +1,9 @@
+.recorder-demo {
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+}
+
+.recorder-button {
+  width: 5rem;
+}
