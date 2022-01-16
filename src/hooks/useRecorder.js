@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import Recorder from '../utilities/recorder';
 
-const { URL, Blob, Promise, navigator, FileReader, AudioContext } = window;
+const { URL, Promise, navigator, AudioContext } = window;
 
 const useRecorder = () => {
   const [recorder, setRecorder] = useState();
   const [finishedRecording, setFinishedRecording] = useState(false);
-  const [audioContext, setAudioContext] = useState();
   const [audioTimeout, setAudioTimeout] = useState();
   const [resolvePromise, setResolvePromise] = useState();
   const [rejectPromise, setRejectPromise] = useState();
@@ -15,9 +14,6 @@ const useRecorder = () => {
   const [audioBlob, setAudioBlob] = useState();
   const [audioURL, setAudioURL] = useState();
 
-  const audioElementType = 'audio/wav';
-  const audioElementID = 'audio-playback';
-
   const getAudio = async () => {
     if (!recorder) {
       throw new Error('Recorder not initialized');
@@ -25,7 +21,6 @@ const useRecorder = () => {
 
     return new Promise((resolve) => {
       recorder.exportWAV((blob) => {
-        console.log(blob);
         setAudioBlob(blob);
         setAudioURL(URL.createObjectURL(blob));
       });
@@ -73,6 +68,7 @@ const useRecorder = () => {
     if (!recorder) {
       await setup();
     }
+    await recorder?.clear();
 
     setIsRecording(true);
   };

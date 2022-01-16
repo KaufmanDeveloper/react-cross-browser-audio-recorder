@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useRecorder from '../hooks/useRecorder';
 
 function RecorderDemo() {
   const { audioURL, isRecording, start, stop } = useRecorder();
-
-  console.log(audioURL);
 
   return (
     <div>
@@ -12,7 +10,7 @@ function RecorderDemo() {
         Start
       </button>
 
-      <audio src={audioURL} controls>
+      <audio src={audioURL} controls type="audio/wav">
         <track default kind="captions" srcLang="en" src={audioURL} />
         Sorry, your browser does not support embedded audio.
       </audio>
