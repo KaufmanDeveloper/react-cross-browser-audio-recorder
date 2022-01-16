@@ -3,14 +3,14 @@ import Recorder from '../utilities/recorder';
 
 const { URL, Promise, navigator, AudioContext } = window;
 
-const useRecorder = () => {
+const useRecorder = (options) => {
   const [recorder, setRecorder] = useState();
   const [finishedRecording, setFinishedRecording] = useState(false);
   const [audioTimeout, setAudioTimeout] = useState();
   const [resolvePromise, setResolvePromise] = useState();
   const [rejectPromise, setRejectPromise] = useState();
   const [isRecording, setIsRecording] = useState();
-  const [recordingTime, setRecordingTime] = useState(5000);
+  const [recordingTime, setRecordingTime] = useState(options?.recordingTime || 5000);
   const [audioBlob, setAudioBlob] = useState();
   const [audioURL, setAudioURL] = useState();
 

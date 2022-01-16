@@ -2,7 +2,8 @@ import React from 'react';
 import useRecorder from '../hooks/useRecorder';
 
 function RecorderDemo() {
-  const { audioURL, isRecording, start, stop } = useRecorder();
+  const options = { recordingTime: 2000 };
+  const { audioURL, isRecording, start, stop } = useRecorder(options);
 
   return (
     <div>
