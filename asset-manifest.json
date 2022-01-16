@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-cross-browser-audio-recorder/static/css/main.d3bfcb0b.css",
-    "main.js": "/react-cross-browser-audio-recorder/static/js/main.4f097da9.js",
+    "main.css": "/react-cross-browser-audio-recorder/static/css/main.954a98fd.css",
+    "main.js": "/react-cross-browser-audio-recorder/static/js/main.54d58d3e.js",
     "static/js/787.33299dfb.chunk.js": "/react-cross-browser-audio-recorder/static/js/787.33299dfb.chunk.js",
     "index.html": "/react-cross-browser-audio-recorder/index.html",
-    "main.d3bfcb0b.css.map": "/react-cross-browser-audio-recorder/static/css/main.d3bfcb0b.css.map",
-    "main.4f097da9.js.map": "/react-cross-browser-audio-recorder/static/js/main.4f097da9.js.map",
+    "main.954a98fd.css.map": "/react-cross-browser-audio-recorder/static/css/main.954a98fd.css.map",
+    "main.54d58d3e.js.map": "/react-cross-browser-audio-recorder/static/js/main.54d58d3e.js.map",
     "787.33299dfb.chunk.js.map": "/react-cross-browser-audio-recorder/static/js/787.33299dfb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d3bfcb0b.css",
-    "static/js/main.4f097da9.js"
+    "static/css/main.954a98fd.css",
+    "static/js/main.54d58d3e.js"
   ]
 }
