@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# react-cross-browser-audio-recorder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React hook that utilizes [Recorder JS](https://github.com/mattdiamond/Recorderjs).
 
-## Available Scripts
+This provides a react hook that can be used to record, play, and export audio as a wav file across all browsers and playable on all operating systems.
 
-In the project directory, you can run:
+<!-- [Demo](put link here) -->
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+npm install react-cross-browser-audio-recorder
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Example usage
 
-### `npm test`
+```
+function RecorderDemo() {
+  const options = { numChannels: 1 };
+  const { audioURL, isRecording, start, stop } = useRecorder(options);
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  return (
+    <div>
+      <button onClick={start} disabled={isRecording} type="button">
+        Start
+      </button>
 
-### `npm run build`
+      <audio src={audioURL} controls type="audio/wav">
+        <track default kind="captions" srcLang="en" src={audioURL} />
+        Sorry, your browser does not support embedded audio.
+      </audio>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+      <button onClick={stop} disabled={!isRecording} type="button">
+        Stop
+      </button>
+    </div>
+  );
+}
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Options
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- numChannels: (Default: 2)
+  - 2 numChannels records 2 channel sound, setting to 1 will allow you to record in mono
