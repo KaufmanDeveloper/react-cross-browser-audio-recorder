@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import Recorder from '../utilities/recorder';
 
-const { URL, Promise, navigator, AudioContext } = window;
+const { URL, Promise, navigator } = window;
+const AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const useRecorder = (options) => {
   const [recorder, setRecorder] = useState();
   const [finishedRecording, setFinishedRecording] = useState(false);
-  const [audioTimeout, setAudioTimeout] = useState();
-  const [resolvePromise, setResolvePromise] = useState();
-  const [rejectPromise, setRejectPromise] = useState();
   const [isRecording, setIsRecording] = useState();
-  const [recordingTime, setRecordingTime] = useState(options?.recordingTime || 5000);
   const [audioBlob, setAudioBlob] = useState();
   const [audioURL, setAudioURL] = useState();
 
@@ -19,7 +16,7 @@ const useRecorder = (options) => {
       throw new Error('Recorder not initialized');
     }
 
-    return new Promise((resolve) => {
+    return new Promise(() => {
       recorder.exportWAV((blob) => {
         setAudioBlob(blob);
         setAudioURL(URL.createObjectURL(blob));
@@ -29,7 +26,7 @@ const useRecorder = (options) => {
 
   const createNewRecorder = async (stream, newAudioContext) => {
     const input = newAudioContext?.createMediaStreamSource(stream);
-    const newRecorder = new Recorder(input);
+    const newRecorder = new Recorder(input, options);
     setRecorder(newRecorder);
   };
 
@@ -43,9 +40,6 @@ const useRecorder = (options) => {
 
   const resetRecorder = () => {
     setIsRecording(false);
-    setAudioTimeout(null);
-    setRejectPromise(null);
-    setResolvePromise(null);
 
     recorder.stop();
   };
@@ -54,11 +48,6 @@ const useRecorder = (options) => {
     if (!isRecording) {
       return;
     }
-
-    // eslint-disable-next-line no-unused-expressions
-    resolvePromise && resolvePromise();
-    // eslint-disable-next-line no-unused-expressions
-    audioTimeout && setAudioTimeout(null);
 
     resetRecorder();
     setFinishedRecording(true);
@@ -74,23 +63,10 @@ const useRecorder = (options) => {
   };
 
   useEffect(() => {
-    if (isRecording && recorder && recordingTime) {
+    if (isRecording && recorder) {
       recorder.record();
-
-      // eslint-disable-next-line no-unused-expressions
-      // Promise((resolve, reject) => {
-      //   const finish = () => resolve(stop());
-      //   if (audioTimeout <= recordingTime) {
-      //     finish();
-      //     return;
-      //   }
-
-      //   setAudioTimeout(audioTimeout);
-      //   setResolvePromise(resolve);
-      //   setRejectPromise(reject);
-      // });
     }
-  }, [isRecording, recorder, recordingTime]);
+  }, [isRecording, recorder]);
 
   useEffect(() => {
     if (finishedRecording) {
@@ -99,7 +75,7 @@ const useRecorder = (options) => {
     }
   }, [finishedRecording]);
 
-  return { audioBlob, audioURL, isRecording, setup, start, stop };
+  return { audioBlob, audioURL, isRecording, setup, start, stop, getAudio };
 };
 
 export default useRecorder;
